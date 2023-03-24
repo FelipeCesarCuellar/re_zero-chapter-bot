@@ -6,7 +6,7 @@ import * as commandModules from "./commands";
 import "./schedules/verifyNovelStatus";
 
 const app = express();
-const port = 3333;
+const port = config.port;
 app.use(cors());
 app.use(express.json());
 
