@@ -1,11 +1,11 @@
-import { Client } from "discord.js";
+// import { Client } from "discord.js";
 import express from "express";
-import config, { FeatureConfiguration } from "./config";
+// import config, { FeatureConfiguration } from "./config";
 import cors from 'cors';
-import * as commandModules from "./commands";
-import "./schedules/verifyNovelStatus";
+// import * as commandModules from "./commands";
+// import "./schedules/verifyNovelStatus";
 
-const commands = Object(commandModules);
+// const commands = Object(commandModules);
 
 const app = express();
 const port = 3333;
