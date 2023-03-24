@@ -29,8 +29,9 @@ client.on("interactionCreate", async (interaction) => {
 client.login(config.DISCORD_TOKEN);
 
 app.get('/', (req, res) => {
+  console.log('✅ Passed Health-Check')
   res.sendStatus(200);
 })
 
-app.listen(process.env.PORT || port, () => console.log('⬆️ Express server running.'));
+app.listen(process.env.PORT || port, () => console.log(`⬆️  Express server running on port ${process.env.PORT || port}`));
 
