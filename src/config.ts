@@ -13,4 +13,18 @@ const config: Record<string, string> = {
     DISCORD_TOKEN,
 };
 
+export class FeatureConfiguration {
+    private autoCheck;
+    constructor() {
+        this.autoCheck = true;
+    }
+    toogleAutoCheckPermission() {
+        this.autoCheck = !this.autoCheck;
+        return this.autoCheck;
+    }
+    getAutoCheckPermission() {
+        return this.autoCheck;
+    }
+}
+
 export default config;

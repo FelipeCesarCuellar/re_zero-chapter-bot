@@ -12,7 +12,7 @@ class RequestNovelService {
       `/output?out=json&ncode=${ncode}`
     );
     const novelData: NcodeRequestData = response.data[1];
-    console.log(novelData);
+    // console.log(novelData);
     if (!novelData) return null;
     return novelData;
   };

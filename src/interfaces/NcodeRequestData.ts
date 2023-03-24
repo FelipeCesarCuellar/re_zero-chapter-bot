@@ -41,3 +41,4 @@ interface NcodeRequestData {
 }
 
 export default NcodeRequestData;
+
