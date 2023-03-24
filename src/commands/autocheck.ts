@@ -1,6 +1,9 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
 import { CommandInteraction } from "discord.js";
-import { featureConfiguration } from "../bot";
+// import { featureConfiguration } from "../bot";
+import { FeatureConfiguration } from "../config";
+
+const featureConfiguration = new FeatureConfiguration();
 
 export const data = new SlashCommandBuilder()
   .setName("autocheck")
