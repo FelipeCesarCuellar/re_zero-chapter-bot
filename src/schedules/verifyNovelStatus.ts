@@ -40,7 +40,7 @@ export async function verifyNovelStatus() {
         data.length - parseInt(local[local.length - 1].total_characters);
 
       if (api_general_lastup > local_general_lastup) {
-        console.log("✨ Capítulo publicado!");
+        console.log("✨ Capítulo publicado");
 
         if (channel) {
           // const current_arc = 8; // Não encontrei um método bom o suficiente para identificar o arco atual automaticamente.
@@ -83,7 +83,7 @@ export async function verifyNovelStatus() {
             "\n";
           fs.appendFile("./src/data/storage.csv", newRegister, (err) => {
             if (err) throw err;
-            console.log("Dados adicionados ao registro!");
+            console.log("➕ Dados adicionados ao registro");
           });
         }
         return;
@@ -126,13 +126,13 @@ export async function verifyNovelStatus() {
             "\n";
           fs.appendFile("./src/data/storage.csv", newRegister, (err) => {
             if (err) throw err;
-            console.log("Criada a primeira linha pro caso de banco vazio.");
+            console.log("❗ Criada a primeira linha pro caso de banco vazio");
           });
         }
       }
     });
 }
 
-// cron.schedule('*/15 * * * *', async () => {
-//    await verifyNovelStatus();
-// });
+cron.schedule('*/15 * * * *', async () => {
+   await verifyNovelStatus();
+});
