@@ -1,6 +1,5 @@
 import { SlashCommandBuilder } from "@discordjs/builders";
-import { CommandInteraction, TextChannel } from "discord.js";
-import { client } from "../bot";
+import { CommandInteraction } from "discord.js";
 import createNovelEmbed from "../embeds/novel";
 import LocalStorageDTO from "../interfaces/LocalStorageDTO";
 import RequestNovelService from "../services/ncode/RequestNovelService";
