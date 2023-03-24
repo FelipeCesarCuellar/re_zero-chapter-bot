@@ -4,7 +4,7 @@ import createNovelEmbed from "../embeds/novel";
 import LocalStorageDTO from "../interfaces/LocalStorageDTO";
 import RequestNovelService from "../services/ncode/RequestNovelService";
 import csv from "csv-parser";
-import fs from 'fs'
+import fs from 'fs';
 
 export const data = new SlashCommandBuilder()
   .setName("atualizar")

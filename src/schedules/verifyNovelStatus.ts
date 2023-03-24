@@ -3,13 +3,9 @@ import fs from "fs";
 import csv from "csv-parser";
 import RequestNovelService from "../services/ncode/RequestNovelService";
 import LocalStorageDTO from "../interfaces/LocalStorageDTO";
-// import { client, featureConfiguration } from "../bot";
+import { client, featureConfiguration } from "../bot";
 import createNovelEmbed from "../embeds/novel";
 import { TextChannel } from "discord.js";
-import { FeatureConfiguration } from "../config";
-
-const client = {};
-const featureConfiguration = new FeatureConfiguration();
 
 export async function verifyNovelStatus() {
   if (!featureConfiguration.getAutoCheckPermission()) return;
@@ -34,7 +30,6 @@ export async function verifyNovelStatus() {
         return;
       }
       const channelId = "1088620261768704081"; // ID do canal onde a mensagem deve ser enviada;
-      // @ts-ignore
       const channel = client.channels.cache.get(channelId) as TextChannel;
 
       const local_general_lastup = new Date(
