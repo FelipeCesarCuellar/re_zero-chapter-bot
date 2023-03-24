@@ -1,9 +1,13 @@
 import { Client } from "discord.js";
+import express from "express";
 import config, { FeatureConfiguration } from "./config";
 import * as commandModules from "./commands";
 import "./schedules/verifyNovelStatus";
 
 const commands = Object(commandModules);
+
+const app = express();
+const port = 3333;
 
 export const featureConfiguration = new FeatureConfiguration();
 export const client = new Client({
@@ -23,3 +27,10 @@ client.on("interactionCreate", async (interaction) => {
 });
 
 client.login(config.DISCORD_TOKEN);
+
+app.get('/', (req, res) => {
+  res.sendStatus(200);
+})
+
+app.listen(process.env.PORT || port, () => console.log('⬆️ Express server running.'));
+
