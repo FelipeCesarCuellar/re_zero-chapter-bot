@@ -42,4 +42,4 @@ export const client = new Client({
 //   commands[commandName].execute(interaction, client);
 // });
 
-client.login(config.DISCORD_TOKEN);
+// client.login(config.DISCORD_TOKEN);
