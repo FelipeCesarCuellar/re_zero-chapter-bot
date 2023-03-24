@@ -30,16 +30,16 @@ export const client = new Client({
   intents: ["Guilds", "GuildMessages", "DirectMessages"],
 });
 
-// client.once("ready", () => {
-//   console.log("🤖 Discord bot online!");
-// });
+client.once("ready", () => {
+  console.log("🤖 Discord bot online!");
+});
 
-// client.on("interactionCreate", async (interaction) => {
-//   if (!interaction.isCommand()) {
-//     return;
-//   }
-//   const { commandName } = interaction;
-//   commands[commandName].execute(interaction, client);
-// });
+client.on("interactionCreate", async (interaction) => {
+  if (!interaction.isCommand()) {
+    return;
+  }
+  const { commandName } = interaction;
+  commands[commandName].execute(interaction, client);
+});
 
-// client.login(config.DISCORD_TOKEN);
+client.login(config.DISCORD_TOKEN);
