@@ -5,12 +5,25 @@ import cors from 'cors';
 import * as commandModules from "./commands";
 import "./schedules/verifyNovelStatus";
 
-const commands = Object(commandModules);
-
 const app = express();
 const port = 3333;
 app.use(cors());
 app.use(express.json());
+
+let firstInteraction = true;
+
+app.get('/', (req, res) => {
+  if (firstInteraction) {
+    console.log('✅ Passed Health-Check');
+    firstInteraction = false;
+  }
+  
+  res.status(200).json({ status: 'ok', message: 'Bot online!' });
+})
+
+app.listen(process.env.PORT || port, () => console.log(`⬆️  Express server running on port ${process.env.PORT || port}`));
+
+const commands = Object(commandModules);
 
 export const featureConfiguration = new FeatureConfiguration();
 export const client = new Client({
@@ -30,11 +43,3 @@ client.on("interactionCreate", async (interaction) => {
 });
 
 client.login(config.DISCORD_TOKEN);
-
-app.get('/', (req, res) => {
-  console.log('✅ Passed Health-Check');
-  res.status(200).json({ status: 'ok', message: 'Bot online!' });
-})
-
-app.listen(process.env.PORT || port, () => console.log(`⬆️  Express server running on port ${process.env.PORT || port}`));
-
