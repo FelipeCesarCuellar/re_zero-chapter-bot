@@ -6,7 +6,7 @@ class RequestNovelService {
     baseURL: "https://api.syosetu.com/novelapi/api",
   });
    getDataByNcode = async (
-    ncode: string = "n2267be"
+    ncode: string = "n0836id" // Ncode de Re:Zero: n2267be
   ): Promise<null | NcodeRequestData> => {
     const response: AxiosResponse = await this.ncodeApi.get(
       `/output?out=json&ncode=${ncode}`

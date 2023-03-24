@@ -29,7 +29,7 @@ export async function verifyNovelStatus() {
         console.log("❌ Nenhuma alteração na Web Novel");
         return;
       }
-      const channelId = "409525868264816662"; // ID do canal onde a mensagem deve ser enviada;
+      const channelId = "1088620261768704081"; // ID do canal onde a mensagem deve ser enviada;
       const channel = client.channels.cache.get(channelId) as TextChannel;
 
       const local_general_lastup = new Date(
