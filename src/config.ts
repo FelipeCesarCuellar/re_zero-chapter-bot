@@ -1,9 +1,9 @@
 import dotenv from 'dotenv';
 
 dotenv.config();
-const { CLIENT_ID, GUILD_ID, DISCORD_TOKEN, PORT } = process.env;
+const { CLIENT_ID, GUILD_ID, DISCORD_TOKEN, TARGET_CHANNEL_ID, NCODE } = process.env;
 
-if (!CLIENT_ID || !GUILD_ID || !DISCORD_TOKEN || !PORT) {
+if (!CLIENT_ID || !GUILD_ID || !DISCORD_TOKEN || !TARGET_CHANNEL_ID || !NCODE) {
     throw new Error("Missing environment variables");
 }
 
@@ -11,7 +11,8 @@ const config: Record<string, string> = {
     CLIENT_ID,
     GUILD_ID,
     DISCORD_TOKEN,
-    PORT,
+    TARGET_CHANNEL_ID,
+    NCODE,
 };
 
 export class FeatureConfiguration {

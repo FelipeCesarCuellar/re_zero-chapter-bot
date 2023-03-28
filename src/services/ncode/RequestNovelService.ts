@@ -1,18 +1,19 @@
 import axios, { AxiosResponse } from "axios";
+import config from "../../config";
 import NcodeRequestData from "../../interfaces/NcodeRequestData";
 
+
+// Ncode de Re:Zero: n2267be
 class RequestNovelService {
   private ncodeApi = axios.create({
     baseURL: "https://api.syosetu.com/novelapi/api",
   });
-   getDataByNcode = async (
-    ncode: string = "n0836id" // Ncode de Re:Zero: n2267be
-  ): Promise<null | NcodeRequestData> => {
+  getDataByNcode = async (): Promise<null | NcodeRequestData> => {
+    const ncode = config.NCODE;
     const response: AxiosResponse = await this.ncodeApi.get(
       `/output?out=json&ncode=${ncode}`
     );
     const novelData: NcodeRequestData = response.data[1];
-    // console.log(novelData);
     if (!novelData) return null;
     return novelData;
   };
