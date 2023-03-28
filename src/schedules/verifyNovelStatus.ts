@@ -6,6 +6,7 @@ import LocalStorageDTO from "../interfaces/LocalStorageDTO";
 import { client, featureConfiguration } from "../bot";
 import createNovelEmbed from "../embeds/novel";
 import { TextChannel } from "discord.js";
+import config from "../config";
 
 export async function verifyNovelStatus() {
   if (!featureConfiguration.getAutoCheckPermission()) return;
@@ -25,29 +26,44 @@ export async function verifyNovelStatus() {
       );
       const api_novelupdated_at = new Date(data.novelupdated_at);
 
+      const today = new Date();
+
       if (api_novelupdated_at <= local_novelupdated_at) {
-        console.log("❌ Nenhuma alteração na Web Novel");
+        console.log("❌ Nenhuma alteração na Web Novel | " + today.toString());
         return;
       }
-      const channelId = "1088620261768704081"; // ID do canal onde a mensagem deve ser enviada;
+
+      const channelId = config.TARGET_CHANNEL_ID;
       const channel = client.channels.cache.get(channelId) as TextChannel;
 
-      const local_general_lastup = new Date(
-        local[local.length - 1].general_lastup
-      );
-      const api_general_lastup = new Date(data.general_lastup);
+      const lastLocalChapter = parseInt(local[local.length - 1].last_chapter);
+
+      if (!lastLocalChapter) {  
+        const newRegister =
+          today.toISOString() +
+          "," +
+          data.length.toString() + 
+          "," +
+          data.general_all_no +
+          "," +
+          api_novelupdated_at.toISOString() +
+          "\n";
+
+        fs.appendFile("./src/data/storage.csv", newRegister, (err) => {
+          if (err) throw err;
+          console.log("❗ Alimentando o banco (1º dado)  | " + today.toString());
+        });
+        return;
+      }
+
       const characterCount =
         data.length - parseInt(local[local.length - 1].total_characters);
 
-      if (api_general_lastup > local_general_lastup) {
-        console.log("✨ Capítulo publicado");
+
+      if (data.general_all_no > lastLocalChapter) {
+        console.log("✨ Capítulo publicado             | " + today.toString());
 
         if (channel) {
-          // const current_arc = 8; // Não encontrei um método bom o suficiente para identificar o arco atual automaticamente.
-          // const chapter_arc_bias = 620 // Viés para indicar quantos capítulos há antes do arco -> Capítulos B estão quebrando a lógica de qualquer maneira.
-          // const additional_bias = 0 // Viés para ser levado em conta na hora de enumerar o capítulo (caso seja publicado algo fora do arco).
-
-          // A ideia inicial era calcular o capítulo do arco por `Valor total de capítulos - chapter_arc_bias - additional_bias`, atualizando manualmente sempre que algo assim ocorresse (não prático).
 
           const embed = createNovelEmbed({
             status: "updated",
@@ -67,9 +83,6 @@ export async function verifyNovelStatus() {
 
           channel.send({ embeds: [embed] });
 
-          // Só atualizo no CSV quando realmente o capítulo lança (por programação defensiva).
-          const today = new Date();
-
           const newRegister =
             today.toISOString() +
             "," +
@@ -78,25 +91,26 @@ export async function verifyNovelStatus() {
             data.general_all_no +
             "," +
             api_novelupdated_at.toISOString() +
-            "," +
-            api_general_lastup.toISOString() +
             "\n";
           fs.appendFile("./src/data/storage.csv", newRegister, (err) => {
             if (err) throw err;
-            console.log("➕ Dados adicionados ao registro");
+            console.log("🎉 Dados adicionados ao registro  | ");
           });
+
         }
+
         return;
       }
 
-      console.log("⌛ Capítulo ainda não foi publicado");
+      console.log("⌛ Capítulo ainda não publicado   | " + today.toString());
+
       if (channel) {
         const embed = createNovelEmbed({
           status: "scheduled",
           title:
             "Detectamos uma alteração na Web Novel que deve ser publicada em breve!",
           url: `https://ncode.syosetu.com/${data?.ncode}/${data?.general_all_no}`,
-          description: `Logo logo mais um capítulo de Re:Zero deve estar sendo lançado, Hype!`,
+          description: `Logo mais um capítulo de Re:Zero deve estar sendo lançado, bora lá!`,
           fields: [
             {
               name: "Contagem de caracteres",
@@ -110,29 +124,23 @@ export async function verifyNovelStatus() {
 
         channel.send({ embeds: [embed] });
 
-        if (JSON.stringify(local[0]) === "{}") {
-          const today = new Date();
-
-          const newRegister =
-            today.toISOString() +
-            "," +
-            data.length +
-            "," +
-            data.general_all_no +
-            "," +
-            api_novelupdated_at.toISOString() +
-            "," +
-            api_general_lastup.toISOString() +
-            "\n";
-          fs.appendFile("./src/data/storage.csv", newRegister, (err) => {
-            if (err) throw err;
-            console.log("❗ Criada a primeira linha pro caso de banco vazio");
-          });
-        }
+        const newRegister =
+          today.toISOString() +
+          "," +
+          local[0].total_characters + 
+          "," +
+          data.general_all_no +
+          "," +
+          api_novelupdated_at.toISOString() +
+          "\n";
+        fs.appendFile("./src/data/storage.csv", newRegister, (err) => {
+          if (err) throw err;
+          console.log("⤴️ Registrando capítulo pendente  | ");
+        });
       }
     });
 }
 
-cron.schedule('*/15 * * * *', async () => {
-   await verifyNovelStatus();
+cron.schedule("*/15 * * * *", async () => {
+  await verifyNovelStatus();
 });
