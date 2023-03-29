@@ -135,7 +135,7 @@ export async function verifyNovelStatus() {
           "\n";
         fs.appendFile("./src/data/storage.csv", newRegister, (err) => {
           if (err) throw err;
-          console.log("⤴️ Registrando capítulo pendente  | ");
+          console.log("⤴️  Registrando capítulo pendente  | ");
         });
       }
     });
