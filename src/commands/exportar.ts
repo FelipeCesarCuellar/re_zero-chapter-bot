@@ -9,5 +9,7 @@ export const data = new SlashCommandBuilder()
 
 export async function execute(interaction: CommandInteraction) {
     const file = new AttachmentBuilder('src/data/storage.csv', { name: 'storage.csv' });
+    const today = new Date();
+    console.log("📁 Arquivo CSV exportado          | " +today.toString());
     return interaction.reply({ files: [file] });
 }
