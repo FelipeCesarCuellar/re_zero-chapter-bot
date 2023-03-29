@@ -20,7 +20,7 @@ const today = new Date();
 
 client.once('ready', () => {
   console.clear();
-  console.log('🤖 Discord bot online!           | ' + today.toString());
+  console.log('🤖      Discord bot online!       | ' + today.toString());
   let activities = ['1ª Temporada de Re:Zero', '2ª Temporada de Re:Zero', 'Re:Zero - Frozen Bonds'], i = 0;
   setInterval(() => {
     client.user?.setActivity(`${activities[i++ % activities.length]}`, { type: ActivityType.Watching });
