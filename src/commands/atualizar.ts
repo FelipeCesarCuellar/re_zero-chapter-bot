@@ -13,6 +13,7 @@ export const data = new SlashCommandBuilder()
   );
 
 export async function execute(interaction: CommandInteraction) {
+  await interaction.deferReply();
   const requestNovelService = new RequestNovelService();
   const data = await requestNovelService.getDataByNcode();
   if (!data) return;
@@ -38,6 +39,6 @@ export async function execute(interaction: CommandInteraction) {
         ],
         footer: { text: `Meu cérebro... estremece. ~ Petelgeuse Romanée Conti` },
       });
-      return interaction.reply({ embeds: [embed] });
+      return interaction.editReply({ embeds: [embed] });
     });
 }
