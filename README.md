@@ -15,7 +15,5 @@ Esse comando pode ser acessado através de **/exportar**, e exporta o arquivo CS
 
 ## Ideias a serem testadas
 
-- [ ] Permitir a configuração de channelId e Ncode através de uma variável .env
-- [ ] Criar comandos de arcos específicos (depende da real utilidade disso)
-- [ ] Conectar com os grupos de tradução (Pleiades e Witch Cult)
-- [ ] Pemitir que o mesmo deploy seja usado em vários servidores diferentes (Como vou mudar a manipulação atual de IDs?)
+- [x] Permitir a configuração de channelId e Ncode através de uma variável .env
+- [ ] Pemitir que o mesmo deploy seja usado em vários servidores diferentes, sem depender muito do .env
