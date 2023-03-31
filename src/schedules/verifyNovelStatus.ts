@@ -38,11 +38,11 @@ export async function verifyNovelStatus() {
 
       const lastLocalChapter = parseInt(local[local.length - 1].last_chapter);
 
-      if (!lastLocalChapter) {  
+      if (!lastLocalChapter) {
         const newRegister =
           today.toISOString() +
           "," +
-          data.length.toString() + 
+          data.length.toString() +
           "," +
           data.general_all_no +
           "," +
@@ -56,15 +56,12 @@ export async function verifyNovelStatus() {
         return;
       }
 
-      const characterCount =
-        data.length - parseInt(local[local.length - 1].total_characters);
+      if (channel) {
+        const lastLocalCharacters = parseInt(local[local.length - 1].total_characters);
+        const characterCount = data.length - lastLocalCharacters;
 
-
-      if (data.general_all_no > lastLocalChapter) {
-        console.log("✨ Capítulo publicado             | " + today.toString());
-
-        if (channel) {
-
+        if (data.general_all_no > lastLocalChapter) {
+          console.log("✨ Capítulo publicado             | " + today.toString());
           const embed = createNovelEmbed({
             status: "updated",
             title: "Mais um capítulo foi lançado na Web Novel de Re:Zero!",
@@ -94,40 +91,53 @@ export async function verifyNovelStatus() {
             "\n";
           fs.appendFile("./src/data/storage.csv", newRegister, (err) => {
             if (err) throw err;
-            console.log("🎉 Dados adicionados ao registro  | ");
           });
-
+          console.log("🎉 Dados adicionados ao registro  | ");
+          return;
         }
 
-        return;
-      }
-
-      console.log("⌛ Capítulo ainda não publicado   | " + today.toString());
-
-      if (channel) {
-        const embed = createNovelEmbed({
-          status: "scheduled",
-          title:
-            "Detectamos uma alteração na Web Novel que deve ser publicada em breve!",
-          url: `https://ncode.syosetu.com/${data?.ncode}/${data?.general_all_no}`,
-          description: `Logo mais um capítulo de Re:Zero deve estar sendo lançado, bora lá!`,
-          fields: [
-            {
-              name: "Contagem de caracteres",
-              value: characterCount.toString(),
+        if (lastLocalCharacters - data.length >= 2000) {
+          console.log("⌛ Capítulo ainda não publicado   | " + today.toString());
+          const embed = createNovelEmbed({
+            status: "scheduled",
+            title:
+              "Detectamos uma alteração na Web Novel que deve ser publicada em breve!",
+            url: `https://ncode.syosetu.com/${data?.ncode}/${data?.general_all_no}`,
+            description: `Logo mais um capítulo de Re:Zero deve estar sendo lançado, bora lá!`,
+            fields: [
+              {
+                name: "Contagem de caracteres",
+                value: characterCount.toString(),
+              },
+            ],
+            footer: {
+              text: `"Um milhão de desculpas não é igual a um obrigado" ~ Emilia`,
             },
-          ],
-          footer: {
-            text: `"Um milhão de desculpas não é igual a um obrigado" ~ Emilia`,
-          },
-        });
+          });
 
-        channel.send({ embeds: [embed] });
+          channel.send({ embeds: [embed] });
 
+          const newRegister =
+            today.toISOString() +
+            "," +
+            lastLocalCharacters +
+            "," +
+            data.general_all_no +
+            "," +
+            api_novelupdated_at.toISOString() +
+            "\n";
+          fs.appendFile("./src/data/storage.csv", newRegister, (err) => {
+            if (err) throw err;
+          });
+          console.log("⤴️  Registrando capítulo pendente  | ");
+          return;
+        }
+
+        console.log("🔨 Correção realizada na Novel    | " + today.toString());
         const newRegister =
           today.toISOString() +
           "," +
-          local[0].total_characters + 
+          data.length +
           "," +
           data.general_all_no +
           "," +
@@ -135,8 +145,9 @@ export async function verifyNovelStatus() {
           "\n";
         fs.appendFile("./src/data/storage.csv", newRegister, (err) => {
           if (err) throw err;
-          console.log("⤴️  Registrando capítulo pendente  | ");
         });
+        console.log("♻️  Registrando alterações         | ");
+        return;
       }
     });
 }
